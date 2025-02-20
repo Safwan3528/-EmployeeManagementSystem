@@ -25,7 +25,6 @@ namespace EmployeeManagementSystem.Forms
         private readonly ComboBox cmbEmployee;
         private readonly DateTimePicker dtpCheckIn;
         private readonly DateTimePicker dtpCheckOut;
-        private readonly ComboBox cmbStatus;
         private readonly User _currentUser;
         private int? selectedAttendanceId;
 
@@ -99,23 +98,6 @@ namespace EmployeeManagementSystem.Forms
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
 
-            cmbStatus = new ComboBox
-            {
-                Dock = DockStyle.Top,
-                BackColor = Color.FromArgb(60, 60, 60),
-                ForeColor = Color.White,
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-
-            cmbStatus.Items.AddRange(new string[] { 
-                "Present", 
-                "Absent", 
-                "Late", 
-                "Half Day",
-                "On Leave" 
-            });
-            cmbStatus.SelectedIndex = 0;
-
             SetupFormControls();
             SetupDataGridView();
             LoadAttendance();
@@ -154,8 +136,6 @@ namespace EmployeeManagementSystem.Forms
                     btnCheckOut,
                     btnCheckIn,
                     btnDownloadReport,
-                    CreateLabel("Status"),
-                    cmbStatus,
                     CreateLabel("Check Out Time"),
                     dtpCheckOut,
                     CreateLabel("Check In Time"),
@@ -1015,7 +995,10 @@ namespace EmployeeManagementSystem.Forms
                 dtpCheckOut.Value = baseDate.AddHours(17); // Default to 5 PM
             }
             
-            cmbStatus.Text = attendance.Status;
+            // Handle Status
+            // Assuming the status is stored in the Status property of the Attendance entity
+            // You might want to implement a logic to populate the status dropdown based on the status
+            // For now, we'll keep the existing implementation
         }
 
         private void ClearForm()
@@ -1025,7 +1008,6 @@ namespace EmployeeManagementSystem.Forms
             dtpDate.Value = DateTime.Today;
             dtpCheckIn.Value = DateTime.Today.AddHours(9);
             dtpCheckOut.Value = DateTime.Today.AddHours(17);
-            cmbStatus.SelectedIndex = 0;
         }
 
         private Label CreateLabel(string text)

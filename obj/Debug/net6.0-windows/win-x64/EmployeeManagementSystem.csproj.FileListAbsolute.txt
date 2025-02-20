@@ -2173,4 +2173,5 @@ C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\obj\Debug\ne
 C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\obj\Debug\net6.0-windows\win-x64\EmployeeManagementSystem.pdb
 C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\obj\Debug\net6.0-windows\win-x64\EmployeeManagementSystem.genruntimeconfig.cache
 C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\obj\Debug\net6.0-windows\win-x64\ref\EmployeeManagementSystem.dll
+C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\obj\Debug\net6.0-windows\win-x64\EmployeeManagementSystem.sourcelink.json
 C:\Users\SAFWANRAHIMIBINSUHAI\Desktop\EmployeeManagementSystem-main\bin\Debug\net6.0-windows\win-x64\hrmanagement.db
