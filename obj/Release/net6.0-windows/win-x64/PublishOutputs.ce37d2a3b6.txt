@@ -1,0 +1,3 @@
+C:\Users\CipherShade\Desktop\EMS\EmployeeManagementSystem.pdb
+C:\Users\CipherShade\Desktop\EMS\hrmanagement.db
+C:\Users\CipherShade\Desktop\EMS\EmployeeManagementSystem.exe
