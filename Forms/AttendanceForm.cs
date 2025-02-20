@@ -142,14 +142,12 @@ namespace EmployeeManagementSystem.Forms
             var btnManualEntry = CreateButton("Add Manual Entry", Color.FromArgb(255, 193, 7));
             var btnUpdate = CreateButton("Update Entry", Color.FromArgb(23, 162, 184));
             var btnDelete = CreateButton("Delete Entry", Color.FromArgb(220, 53, 69));
-            var btnClear = CreateButton("Clear Form", Color.FromArgb(108, 117, 125));
             var btnDownloadReport = CreateButton("Download Monthly Report", Color.FromArgb(75, 123, 236));
 
             // Show/hide controls based on role
             if (_currentUser.Role == UserRole.Administrator)
             {
                 formPanel.Controls.AddRange(new Control[] {
-                    btnClear,
                     btnDelete,
                     btnUpdate,
                     btnManualEntry,
@@ -172,7 +170,6 @@ namespace EmployeeManagementSystem.Forms
                 btnManualEntry.Visible = true;
                 btnUpdate.Visible = true;
                 btnDelete.Visible = true;
-                btnClear.Visible = true;
                 btnDownloadReport.Visible = true;
             }
             else // Employee view
@@ -197,7 +194,6 @@ namespace EmployeeManagementSystem.Forms
             btnManualEntry.Click += BtnManualEntry_Click;
             btnUpdate.Click += BtnUpdate_Click;
             btnDelete.Click += BtnDelete_Click;
-            btnClear.Click += (s, e) => ClearForm();
             btnDownloadReport.Click += BtnDownloadReport_Click;
         }
 
@@ -661,11 +657,18 @@ namespace EmployeeManagementSystem.Forms
 
                 if (existingRecord == null)
                 {
+                    var status = "Present";
+                    // Check if check-in time is after 9 AM
+                    if (currentTime.TimeOfDay > new TimeSpan(9, 0, 0))
+                    {
+                        status = "Late";
+                    }
+
                     existingRecord = new Attendance
                     {
                         EmployeeId = employeeId,
                         Date = currentTime.Date,
-                        Status = "Present", // Will be updated at check-out
+                        Status = status,
                         CheckInTime = currentTime.TimeOfDay,
                         CheckInPhoto = photo,
                         CheckInLocation = location
@@ -677,6 +680,12 @@ namespace EmployeeManagementSystem.Forms
                     existingRecord.CheckInTime = currentTime.TimeOfDay;
                     existingRecord.CheckInPhoto = photo;
                     existingRecord.CheckInLocation = location;
+                    
+                    // Update status if checking in late
+                    if (currentTime.TimeOfDay > new TimeSpan(9, 0, 0))
+                    {
+                        existingRecord.Status = "Late";
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -750,13 +759,23 @@ namespace EmployeeManagementSystem.Forms
 
                 // Calculate work duration and update status
                 var workDuration = currentTime.TimeOfDay - existingRecord.CheckInTime.Value;
+                var checkOutTime = currentTime.TimeOfDay;
+                var normalEndTime = new TimeSpan(17, 0, 0); // 5 PM
+
                 if (workDuration.TotalHours < 8)
                 {
                     existingRecord.Status = "Half Day";
                 }
-                else
+                else if (existingRecord.Status != "Late") // Don't override Late status
                 {
-                    existingRecord.Status = "Present";
+                    if (checkOutTime > normalEndTime)
+                    {
+                        existingRecord.Status = "OT"; // Overtime
+                    }
+                    else
+                    {
+                        existingRecord.Status = "Present";
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -806,13 +825,38 @@ namespace EmployeeManagementSystem.Forms
                     return;
                 }
 
+                // Determine status based on check-in and check-out times
+                var checkInTime = dtpCheckIn.Value.TimeOfDay;
+                var checkOutTime = dtpCheckOut.Value.TimeOfDay;
+                var workDuration = checkOutTime - checkInTime;
+                var normalStartTime = new TimeSpan(9, 0, 0); // 9 AM
+                var normalEndTime = new TimeSpan(17, 0, 0); // 5 PM
+
+                string status;
+                if (checkInTime > normalStartTime)
+                {
+                    status = "Late";
+                }
+                else if (workDuration.TotalHours < 8)
+                {
+                    status = "Half Day";
+                }
+                else if (checkOutTime > normalEndTime)
+                {
+                    status = "OT";
+                }
+                else
+                {
+                    status = "Present";
+                }
+
                 var attendance = new Attendance
                 {
                     EmployeeId = employeeId,
                     Date = dtpDate.Value.Date,
-                    CheckInTime = dtpCheckIn.Value.TimeOfDay,
-                    CheckOutTime = dtpCheckOut.Value.TimeOfDay,
-                    Status = cmbStatus.Text
+                    CheckInTime = checkInTime,
+                    CheckOutTime = checkOutTime,
+                    Status = status
                 };
 
                 _context.Attendances.Add(attendance);
@@ -851,10 +895,35 @@ namespace EmployeeManagementSystem.Forms
                 var attendance = _context.Attendances.Find(selectedAttendanceId.Value);
                 if (attendance == null) return;
 
+                // Determine status based on check-in and check-out times
+                var checkInTime = dtpCheckIn.Value.TimeOfDay;
+                var checkOutTime = dtpCheckOut.Value.TimeOfDay;
+                var workDuration = checkOutTime - checkInTime;
+                var normalStartTime = new TimeSpan(9, 0, 0); // 9 AM
+                var normalEndTime = new TimeSpan(17, 0, 0); // 5 PM
+
+                string status;
+                if (checkInTime > normalStartTime)
+                {
+                    status = "Late";
+                }
+                else if (workDuration.TotalHours < 8)
+                {
+                    status = "Half Day";
+                }
+                else if (checkOutTime > normalEndTime)
+                {
+                    status = "OT";
+                }
+                else
+                {
+                    status = "Present";
+                }
+
                 attendance.Date = dtpDate.Value.Date;
-                attendance.CheckInTime = dtpCheckIn.Value.TimeOfDay;
-                attendance.CheckOutTime = dtpCheckOut.Value.TimeOfDay;
-                attendance.Status = cmbStatus.Text;
+                attendance.CheckInTime = checkInTime;
+                attendance.CheckOutTime = checkOutTime;
+                attendance.Status = status;
 
                 _context.SaveChanges();
                 LoadAttendance();
