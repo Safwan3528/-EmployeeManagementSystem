@@ -994,11 +994,7 @@ namespace EmployeeManagementSystem.Forms
             {
                 dtpCheckOut.Value = baseDate.AddHours(17); // Default to 5 PM
             }
-            
-            // Handle Status
-            // Assuming the status is stored in the Status property of the Attendance entity
-            // You might want to implement a logic to populate the status dropdown based on the status
-            // For now, we'll keep the existing implementation
+            // Status is now automatically determined based on check-in and check-out times
         }
 
         private void ClearForm()

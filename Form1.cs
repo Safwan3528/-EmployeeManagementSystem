@@ -876,6 +876,7 @@ namespace EmployeeManagementSystem
 
         private void ShowAbout()
         {
+            // Main container panel with dark background
             contentPanel.Controls.Clear();
             var aboutPanel = new Panel
             {
@@ -884,81 +885,7 @@ namespace EmployeeManagementSystem
                 Padding = new Padding(20)
             };
 
-            // Create container for centered content
-            var centerPanel = new Panel
-            {
-                Width = 500, // Reduced width
-                Height = 450, // Reduced height
-                BackColor = Color.FromArgb(45, 45, 48),
-                Location = new Point(
-                    (aboutPanel.ClientSize.Width - 500) / 2,
-                    (aboutPanel.ClientSize.Height - 450) / 2)
-            };
-            centerPanel.Anchor = AnchorStyles.None;
-
-            // Add logo/icon
-            var logoLabel = new Label
-            {
-                Text = "👥",
-                Font = new Font("Segoe UI", 42), // Reduced font size
-                ForeColor = Color.FromArgb(0, 123, 255),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Top,
-                Height = 80 // Reduced height
-            };
-
-            // App title
-            var titleLabel = new Label
-            {
-                Text = "Employee Management",
-                Font = new Font("Segoe UI", 20, FontStyle.Bold), // Reduced font size
-                ForeColor = Color.White,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Top,
-                Height = 40 // Reduced height
-            };
-
-            // Version info
-            var versionLabel = new Label
-            {
-                Text = "Version 1.0",
-                Font = new Font("Segoe UI", 10),
-                ForeColor = Color.FromArgb(158, 158, 158),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Top,
-                Height = 25
-            };
-
-            // Separator
-            var separator = new Panel
-            {
-                Height = 1,
-                BackColor = Color.FromArgb(60, 60, 60),
-                Dock = DockStyle.Top,
-                Margin = new Padding(100, 15, 100, 15)
-            };
-
-            // Developer info
-            var developerLabel = new Label
-            {
-                Text = "Developed by",
-                Font = new Font("Segoe UI", 9),
-                ForeColor = Color.FromArgb(158, 158, 158),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Top,
-                Height = 25
-            };
-
-            // Developer names panel
-            var namesPanel = new TableLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 150,
-                ColumnCount = 1,
-                RowCount = 3,
-                Padding = new Padding(20)
-            };
-
+            // Define developers array
             var developers = new[]
             {
                 new { Name = "SAFWAN RAHIMI BIN SUHAILI", Matric = "B24070037" },
@@ -966,28 +893,116 @@ namespace EmployeeManagementSystem
                 new { Name = "AHMAD FAHMIE AIZZAT BIN ABDUL MAJID", Matric = "B24080028" }
             };
 
+            // Center panel that holds all content with slightly lighter background
+            var centerPanel = new Panel
+            {
+                Width = 700,    // Optimal width for content
+                Height = 700,   // Optimal height for content
+                BackColor = Color.FromArgb(45, 45, 48),
+                Location = new Point(
+                    (aboutPanel.ClientSize.Width - 700) / 2,
+                    (aboutPanel.ClientSize.Height - 700) / 2)
+                };
+            centerPanel.Anchor = AnchorStyles.None;
+
+            // App logo
+            var logoLabel = new Label
+            {
+                Text = "👥",
+                Font = new Font("Segoe UI", 72),
+                ForeColor = Color.FromArgb(0, 123, 255),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 120,
+                Margin = new Padding(0, 30, 0, 0)
+            };
+
+            // App title
+            var titleLabel = new Label
+            {
+                Text = "Employee Management",
+                Font = new Font("Segoe UI", 29, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 60,
+                Margin = new Padding(0, 10, 0, 10)
+            };
+
+            // Version number
+            var versionLabel = new Label
+            {
+                Text = "Version 1.0",
+                Font = new Font("Segoe UI", 12),
+                ForeColor = Color.FromArgb(158, 158, 158),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 40,
+                Margin = new Padding(0, 0, 0, 20)
+            };
+
+            // Top separator
+            var separator = new Panel
+            {
+                Height = 2,
+                BackColor = Color.FromArgb(60, 60, 60),
+                Dock = DockStyle.Top,
+                Margin = new Padding(150, 20, 150, 20)
+            };
+
+            // "Developed by" text
+            var developerLabel = new Label
+            {
+                Text = "Developed by",
+                Font = new Font("Segoe UI", 12),
+                ForeColor = Color.FromArgb(158, 158, 158),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 30,
+                Margin = new Padding(0, 20, 0, 10)
+            };
+
+            // Developer names panel
+            var namesPanel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 250,
+                ColumnCount = 1,
+                RowCount = 3,
+                Padding = new Padding(40),
+                BackColor = Color.FromArgb(45, 45, 48)
+            };
+
+            // Add developers with proper spacing
             foreach (var dev in developers)
             {
-                var devPanel = new Panel { Height = 40, Dock = DockStyle.Top };
+                var devPanel = new Panel { 
+                    Height = 60,
+                    Dock = DockStyle.Fill,
+                    Margin = new Padding(0, 5, 0, 5),
+                    BackColor = Color.FromArgb(45, 45, 48)
+                };
                 
                 var nameLabel = new Label
                 {
                     Text = dev.Name,
-                    Font = new Font("Segoe UI", 11, FontStyle.Bold), // Reduced font size
+                    Font = new Font("Segoe UI", 13, FontStyle.Bold),
                     ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Dock = DockStyle.Top,
-                    Height = 25
+                    Height = 35,
+                    Padding = new Padding(0)
                 };
 
                 var matricLabel = new Label
                 {
                     Text = dev.Matric,
-                    Font = new Font("Segoe UI", 9), // Reduced font size
+                    Font = new Font("Segoe UI", 11),
                     ForeColor = Color.FromArgb(158, 158, 158),
                     TextAlign = ContentAlignment.TopCenter,
                     Dock = DockStyle.Top,
-                    Height = 15
+                    Height = 25,
+                    Padding = new Padding(0)
                 };
 
                 devPanel.Controls.Add(matricLabel);
@@ -995,38 +1010,71 @@ namespace EmployeeManagementSystem
                 namesPanel.Controls.Add(devPanel);
             }
 
-            // Another separator
-            var separator2 = new Panel
+            // Bottom separator
+            var bottomSeparator = new Panel
             {
                 Height = 1,
                 BackColor = Color.FromArgb(60, 60, 60),
                 Dock = DockStyle.Top,
-                Margin = new Padding(100, 15, 100, 15)
+                Margin = new Padding(150, 15, 150, 15)
             };
 
-            // Copyright info
+            // Copyright text
             var copyrightLabel = new Label
             {
-                Text = "© 2025 All rights reserved.",
-                Font = new Font("Segoe UI", 9),
+                Text = "© <DevTitans/> 2025 All rights reserved.",
+                Font = new Font("Segoe UI", 10),
                 ForeColor = Color.FromArgb(158, 158, 158),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Top,
-                Height = 25
+                Height = 30
             };
 
-            // Add hover effect to centerPanel
-            centerPanel.MouseEnter += (s, e) => {
-                centerPanel.BackColor = Color.FromArgb(50, 50, 53);
+            // Company Handbook button
+            var handbookButton = new Button
+            {
+                Text = "📚 Company Handbook",
+                Dock = DockStyle.Top,
+                Height = 50,
+                Margin = new Padding(150, 30, 150, 30),
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.FromArgb(0, 123, 255),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 13),
+                Cursor = Cursors.Hand
             };
-            centerPanel.MouseLeave += (s, e) => {
-                centerPanel.BackColor = Color.FromArgb(45, 45, 48);
+            handbookButton.FlatAppearance.BorderSize = 0;
+
+            // Button hover effects
+            handbookButton.MouseEnter += (s, e) => {
+                handbookButton.BackColor = Color.FromArgb(0, 105, 217);
+            };
+            handbookButton.MouseLeave += (s, e) => {
+                handbookButton.BackColor = Color.FromArgb(0, 123, 255);
             };
 
-            // Add all controls to center panel
+            // Button click handler
+            handbookButton.Click += (s, e) => {
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "https://ems-company-policies.vercel.app/",
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error opening handbook: {ex.Message}", 
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
+            // Add all controls in reverse order (bottom to top)
             centerPanel.Controls.AddRange(new Control[] {
+                handbookButton,
                 copyrightLabel,
-                separator2,
+                bottomSeparator,
                 namesPanel,
                 developerLabel,
                 separator,
@@ -1035,14 +1083,12 @@ namespace EmployeeManagementSystem
                 logoLabel
             });
 
-            // Add center panel to about panel
+            // Add panels to form
             aboutPanel.Controls.Add(centerPanel);
-            
-            // Add about panel to content panel
             contentPanel.Controls.Add(aboutPanel);
             lblTitle.Text = "About";
 
-            // Handle resize
+            // Handle window resize
             aboutPanel.Resize += (s, e) => {
                 centerPanel.Location = new Point(
                     (aboutPanel.ClientSize.Width - centerPanel.Width) / 2,
